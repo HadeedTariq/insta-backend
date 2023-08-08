@@ -14,6 +14,9 @@ app.use(cookieParser())
 app.use(cors({credentials:true,origin:process.env.FRONT_URL}))
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
+app.get('/',(req,res)=>{
+    return res.send("Hello")
+})
 app.use('/user',userRouter)
 app.use('/post',postRouter)
 if(process.env.API_PORT){
