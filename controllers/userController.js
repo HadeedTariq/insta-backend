@@ -29,10 +29,8 @@ const authenticateUser = async (req, res) => {
         if (!user) return res.status(404).json({ message: "User not found" })
         const isPasswordVerified = await bcrypt.compare(password, user.password)
         if (!isPasswordVerified) return res.status(404).json({ message: "Password Incorrect" })
-        const token = jwt.sign({ name: user.name, id: user._id, userImage: user.userImage, description: user.description, hobby: user.hobby }, process.env.JWT_SECRET)
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "X-Requested-With")
-        return res.cookie('instaUser', token, { sameSite: "none" }).status(200).json({ message: "User loged in successfully" })
+        const token = jwt.sign({ name: user.name, id: user._id, userImage: user.userImage,description:user.description,hobby:user.hobby }, process.env.JWT_SECRET)
+        return res.cookie('instaUser', token,{sameSite:"none"}).status(200).json({ message: "User loged in successfully" })
     } catch (error) {
         return res.status(404).json({ message: "Something went wrong" })
     }
@@ -44,9 +42,7 @@ const deleteUser = async (req, res) => {
         const user = jwt.verify(instaUser, process.env.JWT_SECRET)
         if (!user) return res.status(404).json({ message: "Invalid Token" })
         await User.deleteOne({ name: user.name })
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "X-Requested-With")
-        return res.cookie('instaUser', '', { sameSite: "none" }).status(200).json({ message: "User deleted  successfully" })
+        return res.cookie('instaUser', '',{sameSite:"none"}).status(200).json({ message: "User deleted  successfully" })
     } catch (err) {
         console.log(err);
         return res.status(404).json({ message: "Something went wrong" })
@@ -63,9 +59,7 @@ const updateUserPassword = async (req, res) => {
         if (!isPasswordVerified) return res.status(404).json({ message: "Password Incorrect" })
         const newHashedPassword = await bcrypt.hash(newPassword, 10)
         await User.findByIdAndUpdate({ _id: user._id }, { password: newHashedPassword })
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "X-Requested-With")
-        return res.cookie('instaUser', '', { sameSite: "none" }).status(200).json({ message: "Password Updated Successfully" })
+        return res.cookie('instaUser', '',{sameSite:"none"}).status(200).json({ message: "Password Updated Successfully" })
     } catch (error) {
         console.log(error);
         return res.status(404).json({ message: "Something went wrong" })
@@ -78,7 +72,7 @@ const updateUserDetails = async (req, res) => {
     const fileKey = Object.keys(fileObject)[0];
     const file = fileObject[fileKey];
     let fileName = fileObject[fileKey].name;
-    fileName = Date.now() + fileName
+    fileName =  Date.now()+fileName
     try {
         const user = await User.findOne({ name })
         if (!user) return res.status(404).json({ message: "User not found" })
@@ -87,10 +81,8 @@ const updateUserDetails = async (req, res) => {
                 console.log(err);
                 return res.status(404).json({ message: "Something went wrong" })
             } else {
-                await User.findByIdAndUpdate({ _id: user._id }, { description: description, hobby: hobby, userImage: fileName })
-                res.header("Access-Control-Allow-Origin", "*");
-                res.header("Access-Control-Allow-Headers", "X-Requested-With")
-                return res.cookie('instaUser', '').status(200).json({ message: "Saved Successfully" })
+                await User.findByIdAndUpdate({ _id: user._id }, { description: description, hobby: hobby,userImage:fileName })
+                return res.cookie('instaUser','').status(200).json({ message: "Saved Successfully" })
             }
         })
     } catch (error) {
@@ -113,16 +105,14 @@ const getSingleUser = async (req, res) => {
 }
 const getAllUser = async (req, res) => {
     const user = await User.find({})
-    const users = user.map(single => {
-        return { name: single.name, userImage: single.userImage, description: single.description, hobby: single.hobby }
+    const users=user.map(single=>{
+       return {name:single.name,userImage:single.userImage,description:single.description,hobby:single.hobby}
     }
-    )
+        )
     return res.status(200).json(users)
 }
 const logOutUser = async (req, res) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With")
-    return res.cookie('instaUser', '', { sameSite: "none" }).status(200).json({ message: "User loged out successfully" })
+    return res.cookie('instaUser', '',{sameSite:"none"}).status(200).json({ message: "User loged out successfully" })
 }
 
 export { createUser, deleteUser, authenticateUser, getAllUser, updateUserPassword, getSingleUser, logOutUser, updateUserDetails }
