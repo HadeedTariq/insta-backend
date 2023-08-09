@@ -11,7 +11,7 @@ connectDb().then(()=>console.log('data base connected'))
 const app=express()
 app.use(express.static(path.resolve('./public')))
 app.use(cookieParser())
-app.use(cors({credentials:true,origin:'https://insta-frontend-six.vercel.app/'}))
+app.use(cors({credentials:true,origin:'https://insta-frontend-six.vercel.app'}))
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 app.get('/',(req,res)=>{
