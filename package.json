@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "type": "module",
+  "proxy":"https://insta-frontend-six.vercel.app",
   "scripts": {
     "start": "node ./server.js",
     "client": "npm run dev --prefix client",
