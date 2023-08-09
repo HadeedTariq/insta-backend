@@ -30,7 +30,7 @@ const authenticateUser = async (req, res) => {
         const isPasswordVerified = await bcrypt.compare(password, user.password)
         if (!isPasswordVerified) return res.status(404).json({ message: "Password Incorrect" })
         const token = jwt.sign({ name: user.name, id: user._id, userImage: user.userImage,description:user.description,hobby:user.hobby }, process.env.JWT_SECRET)
-        return res.cookie('instaUser', token).status(200).json({ message: "User loged in successfully" })
+        return res.cookie('instaUser', token,{sameSite:"strict"}).status(200).json({ message: "User loged in successfully" })
     } catch (error) {
         return res.status(404).json({ message: "Something went wrong" })
     }
@@ -42,7 +42,7 @@ const deleteUser = async (req, res) => {
         const user = jwt.verify(instaUser, process.env.JWT_SECRET)
         if (!user) return res.status(404).json({ message: "Invalid Token" })
         await User.deleteOne({ name: user.name })
-        return res.cookie('instaUser', '').status(200).json({ message: "User deleted  successfully" })
+        return res.cookie('instaUser', '',{sameSite:"strict"}).status(200).json({ message: "User deleted  successfully" })
     } catch (err) {
         console.log(err);
         return res.status(404).json({ message: "Something went wrong" })
@@ -59,7 +59,7 @@ const updateUserPassword = async (req, res) => {
         if (!isPasswordVerified) return res.status(404).json({ message: "Password Incorrect" })
         const newHashedPassword = await bcrypt.hash(newPassword, 10)
         await User.findByIdAndUpdate({ _id: user._id }, { password: newHashedPassword })
-        return res.cookie('instaUser', '').status(200).json({ message: "Password Updated Successfully" })
+        return res.cookie('instaUser', '',{sameSite:"strict"}).status(200).json({ message: "Password Updated Successfully" })
     } catch (error) {
         console.log(error);
         return res.status(404).json({ message: "Something went wrong" })
@@ -112,7 +112,7 @@ const getAllUser = async (req, res) => {
     return res.status(200).json(users)
 }
 const logOutUser = async (req, res) => {
-    return res.cookie('instaUser', '').status(200).json({ message: "User loged out successfully" })
+    return res.cookie('instaUser', '',{sameSite:"strict"}).status(200).json({ message: "User loged out successfully" })
 }
 
 export { createUser, deleteUser, authenticateUser, getAllUser, updateUserPassword, getSingleUser, logOutUser, updateUserDetails }
