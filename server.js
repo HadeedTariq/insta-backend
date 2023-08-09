@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import {connectDb} from './connection/db.js'
 import { userRouter } from './routes/userRouter.js'
 import { postRouter } from './routes/postRouter.js'
+import session from 'express-session'
 import path from 'path'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
@@ -11,6 +12,15 @@ connectDb().then(()=>console.log('data base connected'))
 const app=express()
 app.set('trust proxy',1)
 app.use(express.static(path.resolve('./public')))
+app.use(session({
+    resave:false,
+    saveUninitialized:false,
+    secret:"session",
+    cookie:{
+        sameSite:"none",
+        secure:true
+    }
+}))
 app.use(cookieParser())
 app.use(cors({credentials:true,origin:'https://insta-frontend-six.vercel.app'}))
 app.use(express.json())
