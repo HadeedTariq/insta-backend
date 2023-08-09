@@ -10,19 +10,20 @@ import cors from 'cors'
 dotenv.config()
 connectDb().then(()=>console.log('data base connected'))
 const app=express()
-app.set('trust proxy',1)
 app.use(express.static(path.resolve('./public')))
+app.use(cookieParser())
+app.use(cors({credentials:true,origin:'https://insta-frontend-six.vercel.app'}))
 app.use(session({
     resave:false,
     saveUninitialized:false,
     secret:"session",
     cookie:{
+        maxAge:1000*60*60,
         sameSite:"none",
         secure:true
     }
 }))
-app.use(cookieParser())
-app.use(cors({credentials:true,origin:'https://insta-frontend-six.vercel.app'}))
+app.set('trust proxy',1)
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 app.get('/',(req,res)=>{
