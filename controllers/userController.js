@@ -30,7 +30,9 @@ const authenticateUser = async (req, res) => {
         const isPasswordVerified = await bcrypt.compare(password, user.password)
         if (!isPasswordVerified) return res.status(404).json({ message: "Password Incorrect" })
         const token = jwt.sign({ name: user.name, id: user._id, userImage: user.userImage, description: user.description, hobby: user.hobby }, process.env.JWT_SECRET)
-        return res.header("Access-Control-Allow-Origin", "*").cookie('instaUser', token, { sameSite: "none" }).status(200).json({ message: "User loged in successfully" })
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "X-Requested-With")
+        return res.cookie('instaUser', token, { sameSite: "none" }).status(200).json({ message: "User loged in successfully" })
     } catch (error) {
         return res.status(404).json({ message: "Something went wrong" })
     }
@@ -42,7 +44,9 @@ const deleteUser = async (req, res) => {
         const user = jwt.verify(instaUser, process.env.JWT_SECRET)
         if (!user) return res.status(404).json({ message: "Invalid Token" })
         await User.deleteOne({ name: user.name })
-        return res.header("Access-Control-Allow-Origin", "*").cookie('instaUser', '', { sameSite: "none" }).status(200).json({ message: "User deleted  successfully" })
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "X-Requested-With")
+        return res.cookie('instaUser', '', { sameSite: "none" }).status(200).json({ message: "User deleted  successfully" })
     } catch (err) {
         console.log(err);
         return res.status(404).json({ message: "Something went wrong" })
@@ -59,7 +63,9 @@ const updateUserPassword = async (req, res) => {
         if (!isPasswordVerified) return res.status(404).json({ message: "Password Incorrect" })
         const newHashedPassword = await bcrypt.hash(newPassword, 10)
         await User.findByIdAndUpdate({ _id: user._id }, { password: newHashedPassword })
-        return res.header("Access-Control-Allow-Origin", "*").cookie('instaUser', '', { sameSite: "none" }).status(200).json({ message: "Password Updated Successfully" })
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "X-Requested-With")
+        return res.cookie('instaUser', '', { sameSite: "none" }).status(200).json({ message: "Password Updated Successfully" })
     } catch (error) {
         console.log(error);
         return res.status(404).json({ message: "Something went wrong" })
@@ -82,7 +88,9 @@ const updateUserDetails = async (req, res) => {
                 return res.status(404).json({ message: "Something went wrong" })
             } else {
                 await User.findByIdAndUpdate({ _id: user._id }, { description: description, hobby: hobby, userImage: fileName })
-                return res.header("Access-Control-Allow-Origin", "*").cookie('instaUser', '').status(200).json({ message: "Saved Successfully" })
+                res.header("Access-Control-Allow-Origin", "*");
+                res.header("Access-Control-Allow-Headers", "X-Requested-With")
+                return res.cookie('instaUser', '').status(200).json({ message: "Saved Successfully" })
             }
         })
     } catch (error) {
@@ -112,7 +120,9 @@ const getAllUser = async (req, res) => {
     return res.status(200).json(users)
 }
 const logOutUser = async (req, res) => {
-    return res.header("Access-Control-Allow-Origin", "*").cookie('instaUser', '', { sameSite: "none" }).status(200).json({ message: "User loged out successfully" })
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With")
+    return res.cookie('instaUser', '', { sameSite: "none" }).status(200).json({ message: "User loged out successfully" })
 }
 
 export { createUser, deleteUser, authenticateUser, getAllUser, updateUserPassword, getSingleUser, logOutUser, updateUserDetails }
