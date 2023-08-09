@@ -31,7 +31,7 @@ const authenticateUser = async (req, res) => {
         if (!isPasswordVerified) return res.status(404).json({ message: "Password Incorrect" })
         const token = jwt.sign({ name: user.name, id: user._id, userImage: user.userImage, description: user.description, hobby: user.hobby }, process.env.JWT_SECRET)
         res.set('Access-Control-Allow-Origin', 'https://insta-frontend-six.vercel.app')
-        return res.cookie('instaUser', token, { sameSite: "strict" }).status(200).json({ message: "User loged in successfully" })
+        return res.cookie('instaUser', token, { sameSite: "none",httpOnly:false }).status(200).json({ message: "User loged in successfully" })
     } catch (error) {
         return res.status(404).json({ message: "Something went wrong" })
     }
@@ -44,7 +44,7 @@ const deleteUser = async (req, res) => {
         if (!user) return res.status(404).json({ message: "Invalid Token" })
         await User.deleteOne({ name: user.name })
         res.set('Access-Control-Allow-Origin', 'https://insta-frontend-six.vercel.app')
-        return res.cookie('instaUser', '', { sameSite: "strict" }).status(200).json({ message: "User deleted  successfully" })
+        return res.cookie('instaUser', '', { sameSite: "none",httpOnly:false }).status(200).json({ message: "User deleted  successfully" })
     } catch (err) {
         console.log(err);
         return res.status(404).json({ message: "Something went wrong" })
@@ -62,7 +62,7 @@ const updateUserPassword = async (req, res) => {
         const newHashedPassword = await bcrypt.hash(newPassword, 10)
         await User.findByIdAndUpdate({ _id: user._id }, { password: newHashedPassword })
         response.set('A-Control-Allow-Origin', 'https://insta-frontend-six.vercel.app')
-        return res.cookie('instaUser', '', { sameSite: "strict" }).status(200).json({ message: "Password Updated Successfully" })
+        return res.cookie('instaUser', '', { sameSite: "none",httpOnly:false }).status(200).json({ message: "Password Updated Successfully" })
     } catch (error) {
         console.log(error);
         return res.status(404).json({ message: "Something went wrong" })
@@ -117,7 +117,7 @@ const getAllUser = async (req, res) => {
 }
 const logOutUser = async (req, res) => {
     res.set('Access-Control-Allow-Origin', 'https://insta-frontend-six.vercel.app')
-    return res.cookie('instaUser', '', { sameSite: "strict" }).status(200).json({ message: "User loged out successfully" })
+    return res.cookie('instaUser', '', { sameSite: "none",httpOnly:false }).status(200).json({ message: "User loged out successfully" })
 }
 
 export { createUser, deleteUser, authenticateUser, getAllUser, updateUserPassword, getSingleUser, logOutUser, updateUserDetails }
