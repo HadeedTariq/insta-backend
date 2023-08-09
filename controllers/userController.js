@@ -30,7 +30,7 @@ const authenticateUser = async (req, res) => {
         const isPasswordVerified = await bcrypt.compare(password, user.password)
         if (!isPasswordVerified) return res.status(404).json({ message: "Password Incorrect" })
         const token = jwt.sign({ name: user.name, id: user._id, userImage: user.userImage, description: user.description, hobby: user.hobby }, process.env.JWT_SECRET)
-        res.set('Access-Control-Allow-Origin', 'https://insta-frontend-six.vercel.app')
+        res.set('Access-Control-Allow-Origin', 'https://insta-frontend-six.vercel.app/auth')
         return res.cookie('instaUser', token, { sameSite: "none",httpOnly:false }).status(200).json({ message: "User loged in successfully" })
     } catch (error) {
         return res.status(404).json({ message: "Something went wrong" })
