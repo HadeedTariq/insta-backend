@@ -32,8 +32,8 @@ const authenticateUser = async (req, res) => {
         const token = jwt.sign({ name: user.name, id: user._id, userImage: user.userImage, description: user.description, hobby: user.hobby }, process.env.JWT_SECRET)
         return res.cookie('instaUser', token, {
             secure:true,
-            sameSite: true,
-            maxAge: 30 * 24 * 60 * 60 * 1000, 
+            sameSite: 'None',
+            maxAge: 30 * 24 * 60 * 60 * 1000
           }).status(200).json({ message: "User loged in successfully" })
     } catch (error) {
         return res.status(404).json({ message: "Something went wrong" })
