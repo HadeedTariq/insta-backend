@@ -41,7 +41,7 @@ const authenticateUser = async (req, res) => {
     }
 };
 const deleteUser = async (req, res) => {
-    const { instaUser } = req.cookies
+    const { instaUser } = req.body
     try {
         if (!instaUser) return res.status(404).json({ message: "Not token found" })
         const user = jwt.verify(instaUser, process.env.JWT_SECRET)
@@ -111,7 +111,7 @@ const updateUserDetails = async (req, res) => {
 }
 
 const getSingleUser = async (req, res) => {
-    const { instaUser } = req.cookies
+    const { instaUser } = req.body
     try {
         if (!instaUser) return res.status(404).json({ message: "Not token found" })
         const user = jwt.verify(instaUser, process.env.JWT_SECRET)
