@@ -32,7 +32,10 @@ const authenticateUser = async (req, res) => {
         const token = jwt.sign({ name: user.name, id: user._id, userImage: user.userImage, description: user.description, hobby: user.hobby }, process.env.JWT_SECRET)
         res.set('Access-Control-Allow-Origin', 'https://insta-frontend-six.vercel.app')
         return res.cookie('instaUser', token, {
-            maxAge: 1000*60*30
+            httpOnly: true,
+            secure: true, 
+            sameSite: 'strict',
+            maxAge: 30 * 24 * 60 * 60 * 1000, 
           }).status(200).json({ message: "User loged in successfully" })
     } catch (error) {
         return res.status(404).json({ message: "Something went wrong" })
@@ -46,9 +49,11 @@ const deleteUser = async (req, res) => {
         if (!user) return res.status(404).json({ message: "Invalid Token" })
         await User.deleteOne({ name: user.name })
         res.set('Access-Control-Allow-Origin', 'https://insta-frontend-six.vercel.app')
-        return res.cookie('instaUser', '', {
-            maxAge: 1000*60*30,
-            signed: true
+        return res.cookie('instaUser', '',{
+            httpOnly: true,
+            secure: true, 
+            sameSite: 'strict',
+            maxAge: 30 * 24 * 60 * 60 * 1000, 
           }).status(200).json({ message: "User deleted  successfully" })
     } catch (err) {
         console.log(err);
@@ -68,7 +73,10 @@ const updateUserPassword = async (req, res) => {
         await User.findByIdAndUpdate({ _id: user._id }, { password: newHashedPassword })
         response.set('A-Control-Allow-Origin', 'https://insta-frontend-six.vercel.app')
         return res.cookie('instaUser', '', {
-            maxAge: 1000*60*30
+            httpOnly: true,
+            secure: true, 
+            sameSite: 'strict',
+            maxAge: 30 * 24 * 60 * 60 * 1000, 
           }).status(200).json({ message: "Password Updated Successfully" })
     } catch (error) {
         console.log(error);
@@ -94,7 +102,10 @@ const updateUserDetails = async (req, res) => {
                 await User.findByIdAndUpdate({ _id: user._id }, { description: description, hobby: hobby, userImage: fileName })
                 response.set('A-Control-Allow-Origin', 'https://insta-frontend-six.vercel.app')
                 return res.cookie('instaUser', '', {
-                    maxAge: 1000*60*30
+                    httpOnly: true,
+                    secure: true, 
+                    sameSite: 'strict',
+                    maxAge: 30 * 24 * 60 * 60 * 1000, 
                   }).status(200).json({ message: "Saved Successfully" })
             }
         })
@@ -127,7 +138,10 @@ const getAllUser = async (req, res) => {
 const logOutUser = async (req, res) => {
     res.set('Access-Control-Allow-Origin', 'https://insta-frontend-six.vercel.app')
     return res.cookie('instaUser', '', {
-        maxAge: 1000*60*30
+        httpOnly: true,
+        secure: true, 
+        sameSite: 'strict',
+        maxAge: 30 * 24 * 60 * 60 * 1000, 
       }).status(200).json({ message: "User loged out successfully" })
 }
 
