@@ -13,7 +13,7 @@ app.use(express.urlencoded({extended:false}))
 app.use(express.static(path.resolve('./public')))
 app.use(cookieParser())
 app.use(express.json())
-app.use(cors({credentials:true,origin:['https://insta-frontend-six.vercel.app','http://localhost:5173']}))
+app.use(cors({origin:['https://insta-frontend-six.vercel.app','http://localhost:5173'],credentials:true}))
 app.get('/',(req,res)=>{
     return res.send("Hello")
 })
