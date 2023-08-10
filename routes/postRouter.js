@@ -14,7 +14,7 @@ router.post('/create', async (req, res) => {
     let fileName = fileObject[fileKey].name;
     let postImage =  Date.now()+fileName
     try {
-      file.mv('../public/posts/' + postImage, async function (err) {
+      file.mv('/public/posts/' + postImage, async function (err) {
         // /React Projects/mern-project/insta-clone/client/public/posts/
         if (err) {
             console.log(err);
