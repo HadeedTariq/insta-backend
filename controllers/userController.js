@@ -34,7 +34,7 @@ const authenticateUser = async (req, res) => {
         return res.cookie('instaUser', token, {
             httpOnly: true,
             secure: true, 
-            sameSite: 'strict',
+            sameSite: 'none',
             maxAge: 30 * 24 * 60 * 60 * 1000, 
           }).status(200).json({ message: "User loged in successfully" })
     } catch (error) {
@@ -52,7 +52,7 @@ const deleteUser = async (req, res) => {
         return res.cookie('instaUser', '',{
             httpOnly: true,
             secure: true, 
-            sameSite: 'strict',
+            sameSite: 'none',
             maxAge: 30 * 24 * 60 * 60 * 1000, 
           }).status(200).json({ message: "User deleted  successfully" })
     } catch (err) {
@@ -75,7 +75,7 @@ const updateUserPassword = async (req, res) => {
         return res.cookie('instaUser', '', {
             httpOnly: true,
             secure: true, 
-            sameSite: 'strict',
+            sameSite: 'none',
             maxAge: 30 * 24 * 60 * 60 * 1000, 
           }).status(200).json({ message: "Password Updated Successfully" })
     } catch (error) {
@@ -104,7 +104,7 @@ const updateUserDetails = async (req, res) => {
                 return res.cookie('instaUser', '', {
                     httpOnly: true,
                     secure: true, 
-                    sameSite: 'strict',
+                    sameSite: 'none',
                     maxAge: 30 * 24 * 60 * 60 * 1000, 
                   }).status(200).json({ message: "Saved Successfully" })
             }
@@ -140,7 +140,7 @@ const logOutUser = async (req, res) => {
     return res.cookie('instaUser', '', {
         httpOnly: true,
         secure: true, 
-        sameSite: 'strict',
+        sameSite: 'none',
         maxAge: 30 * 24 * 60 * 60 * 1000, 
       }).status(200).json({ message: "User loged out successfully" })
 }
