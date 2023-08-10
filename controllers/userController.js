@@ -32,7 +32,7 @@ const authenticateUser = async (req, res) => {
         const token = jwt.sign({ name: user.name, id: user._id, userImage: user.userImage, description: user.description, hobby: user.hobby }, process.env.JWT_SECRET)
         return res.cookie('instaUser', token, {
             httpOnly: true, 
-            sameSite: 'none',
+            sameSite: 'strict',
             maxAge: 30 * 24 * 60 * 60 * 1000, 
           }).status(200).json({ message: "User loged in successfully" })
     } catch (error) {
@@ -48,7 +48,7 @@ const deleteUser = async (req, res) => {
         await User.deleteOne({ name: user.name })
         return res.cookie('instaUser', '',{
             httpOnly: true, 
-            sameSite: 'none',
+            sameSite: 'strict',
             maxAge: 30 * 24 * 60 * 60 * 1000, 
           }).status(200).json({ message: "User deleted  successfully" })
     } catch (err) {
@@ -70,7 +70,7 @@ const updateUserPassword = async (req, res) => {
         response.set('A-Control-Allow-Origin', 'https://insta-frontend-six.vercel.app')
         return res.cookie('instaUser', '', {
             httpOnly: true, 
-            sameSite: 'none',
+            sameSite: 'strict',
             maxAge: 30 * 24 * 60 * 60 * 1000, 
           }).status(200).json({ message: "Password Updated Successfully" })
     } catch (error) {
@@ -98,7 +98,7 @@ const updateUserDetails = async (req, res) => {
                 response.set('A-Control-Allow-Origin', 'https://insta-frontend-six.vercel.app')
                 return res.cookie('instaUser', '', {
                     httpOnly: true, 
-                    sameSite: 'none',
+                    sameSite: 'strict',
                     maxAge: 30 * 24 * 60 * 60 * 1000, 
                   }).status(200).json({ message: "Saved Successfully" })
             }
@@ -132,7 +132,7 @@ const getAllUser = async (req, res) => {
 const logOutUser = async (req, res) => {
     return res.cookie('instaUser', '', {
         httpOnly: true, 
-        sameSite: 'none',
+        sameSite: 'strict',
         maxAge: 30 * 24 * 60 * 60 * 1000, 
       }).status(200).json({ message: "User loged out successfully" })
 }
