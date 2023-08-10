@@ -35,7 +35,7 @@ const authenticateUser = async (req, res) => {
             secure:true,
             sameSite: 'lax',
             maxAge: 30 * 24 * 60 * 60 * 1000
-          }).status(200).json({ message: "User loged in successfully" })
+          }).status(200).json(token)
     } catch (error) {
         return res.status(404).json({ message: "Something went wrong" })
     }
