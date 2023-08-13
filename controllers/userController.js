@@ -35,12 +35,13 @@ const authenticateUser = async (req, res) => {
             sameSite: 'lax',
             maxAge: 30 * 24 * 60 * 60 * 1000,
         }).status(200).json({ message: "User loged in successfully" })
+          
     } catch (error) {
         return res.status(404).json({ message: "Something went wrong" })
     }
 };
 const deleteUser = async (req, res) => {
-    const { instaUser } = req.cookies
+    const { instaUser } = req.body
     try {
         if (!instaUser) return res.status(404).json({ message: "Not token found" })
         const user = jwt.verify(instaUser, process.env.JWT_SECRET)
