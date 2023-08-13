@@ -31,10 +31,10 @@ const authenticateUser = async (req, res) => {
         if (!isPasswordVerified) return res.status(404).json({ message: "Password Incorrect" })
         const token = jwt.sign({ name: user.name, id: user._id, userImage: user.userImage, description: user.description, hobby: user.hobby }, process.env.JWT_SECRET)
         return res.cookie('instaUser', token, {
-            httpOnly: true, 
+            httpOnly: true,
             sameSite: 'lax',
-            maxAge: 30 * 24 * 60 * 60 * 1000, 
-          }).status(200).json({ message: "User loged in successfully" })
+            maxAge: 30 * 24 * 60 * 60 * 1000,
+        }).status(200).json({ message: "User loged in successfully" })
     } catch (error) {
         return res.status(404).json({ message: "Something went wrong" })
     }
@@ -46,11 +46,11 @@ const deleteUser = async (req, res) => {
         const user = jwt.verify(instaUser, process.env.JWT_SECRET)
         if (!user) return res.status(404).json({ message: "Invalid Token" })
         await User.deleteOne({ name: user.name })
-        return res.cookie('instaUser', '',{
-            httpOnly: true, 
+        return res.cookie('instaUser', '', {
+            httpOnly: true,
             sameSite: 'lax',
-            maxAge: 30 * 24 * 60 * 60 * 1000, 
-          }).status(200).json({ message: "User deleted  successfully" })
+            maxAge: 30 * 24 * 60 * 60 * 1000,
+        }).status(200).json({ message: "User deleted  successfully" })
     } catch (err) {
         console.log(err);
         return res.status(404).json({ message: "Something went wrong" })
@@ -69,10 +69,10 @@ const updateUserPassword = async (req, res) => {
         await User.findByIdAndUpdate({ _id: user._id }, { password: newHashedPassword })
         response.set('A-Control-Allow-Origin', 'https://insta-frontend-six.vercel.app')
         return res.cookie('instaUser', '', {
-            httpOnly: true, 
+            httpOnly: true,
             sameSite: 'lax',
-            maxAge: 30 * 24 * 60 * 60 * 1000, 
-          }).status(200).json({ message: "Password Updated Successfully" })
+            maxAge: 30 * 24 * 60 * 60 * 1000,
+        }).status(200).json({ message: "Password Updated Successfully" })
     } catch (error) {
         console.log(error);
         return res.status(404).json({ message: "Something went wrong" })
@@ -97,10 +97,10 @@ const updateUserDetails = async (req, res) => {
                 await User.findByIdAndUpdate({ _id: user._id }, { description: description, hobby: hobby, userImage: fileName })
                 response.set('A-Control-Allow-Origin', 'https://insta-frontend-six.vercel.app')
                 return res.cookie('instaUser', '', {
-                    httpOnly: true, 
+                    httpOnly: true,
                     sameSite: 'lax',
-                    maxAge: 30 * 24 * 60 * 60 * 1000, 
-                  }).status(200).json({ message: "Saved Successfully" })
+                    maxAge: 30 * 24 * 60 * 60 * 1000,
+                }).status(200).json({ message: "Saved Successfully" })
             }
         })
     } catch (error) {
@@ -131,10 +131,10 @@ const getAllUser = async (req, res) => {
 }
 const logOutUser = async (req, res) => {
     return res.cookie('instaUser', '', {
-        httpOnly: true, 
+        httpOnly: true,
         sameSite: 'lax',
-        maxAge: 30 * 24 * 60 * 60 * 1000, 
-      }).status(200).json({ message: "User loged out successfully" })
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+    }).status(200).json({ message: "User loged out successfully" })
 }
 
 export { createUser, deleteUser, authenticateUser, getAllUser, updateUserPassword, getSingleUser, logOutUser, updateUserDetails }
