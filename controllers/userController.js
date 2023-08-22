@@ -42,13 +42,14 @@ const authenticateUser = async (req, res) => {
         hobby: user.hobby,
       },
       process.env.JWT_SECRET
-    );
+    )
+res.cookie('instaUser',token,{
+httpOnly: true,
+    secure: process.env.NODE_ENV !== 'development',
+    sameSite: 'strict', // Prevent CSRF attacks
+    maxAge: 30 * 24 * 60 * 60 * 1000
+})
     return res
-      .cookie("instaUser", token, {
-        httpOnly: true,
-        sameSite: "lax",
-        maxAge: 30 * 24 * 60 * 60 * 1000,
-      })
       .status(200)
       .json({ message: "User loged in successfully" });
   } catch (error) {
