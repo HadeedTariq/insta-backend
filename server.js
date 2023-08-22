@@ -9,6 +9,7 @@ import cors from 'cors'
 dotenv.config()
 connectDb().then(()=>console.log('data base connected'))
 const app=express()
+app.set("trust proxy",1)
 app.use(express.urlencoded({extended:false}))
 app.use(express.static(path.resolve('./public')))
 app.use(express.json())
