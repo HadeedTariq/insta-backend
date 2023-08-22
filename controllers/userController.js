@@ -46,7 +46,7 @@ const authenticateUser = async (req, res) => {
 res.cookie('instaUser',token,{
 httpOnly: true,
     secure: true,
-    sameSite: 'lax', // Prevent CSRF attacks
+    domain:'.vercel.com',
     maxAge: 30 * 24 * 60 * 60 * 1000
 })
     return res
@@ -67,6 +67,7 @@ const deleteUser = async (req, res) => {
       .cookie("instaUser", "", {
         httpOnly: true,
         sameSite: "lax",
+domain:'.vercel.com',
         maxAge: 30 * 24 * 60 * 60 * 1000,
       })
       .status(200)
@@ -99,7 +100,7 @@ const updateUserPassword = async (req, res) => {
     return res
       .cookie("instaUser", "", {
         httpOnly: true,
-        sameSite: "lax",
+        domain:'.vercel.com',
         maxAge: 30 * 24 * 60 * 60 * 1000,
       })
       .status(200)
