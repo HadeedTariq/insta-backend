@@ -48,6 +48,7 @@ const authenticateUser = async (req, res) => {
         httpOnly: true,
         sameSite: "strict",
         domain: ".vercel.app",
+        secure: true,
         maxAge: 30 * 24 * 60 * 60 * 1000,
       })
       .status(200)
@@ -68,6 +69,7 @@ const deleteUser = async (req, res) => {
         httpOnly: true,
         sameSite: "strict",
         domain: ".vercel.app",
+        secure: true,
         maxAge: 30 * 24 * 60 * 60 * 1000,
       })
       .status(200)
@@ -102,6 +104,7 @@ const updateUserPassword = async (req, res) => {
         httpOnly: true,
         sameSite: "strict",
         domain: ".vercel.app",
+        secure: true,
         maxAge: 30 * 24 * 60 * 60 * 1000,
       })
       .status(200)
@@ -127,6 +130,7 @@ const updateUserDetails = async (req, res) => {
         httpOnly: true,
         sameSite: "strict",
         domain: ".vercel.app",
+        secure: true,
         maxAge: 30 * 24 * 60 * 60 * 1000,
       })
       .status(200)
@@ -167,6 +171,7 @@ const logOutUser = async (req, res) => {
       httpOnly: true,
       sameSite: "strict",
       domain: ".vercel.app",
+      secure: true,
       maxAge: 30 * 24 * 60 * 60 * 1000,
     })
     .status(200)
