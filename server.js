@@ -9,10 +9,11 @@ import cors from 'cors'
 dotenv.config()
 connectDb().then(()=>console.log('data base connected'))
 const app=express()
+app.set("trust proxy",1)
 app.use(express.urlencoded({extended:false}))
 app.use(express.static(path.resolve('./public')))
 app.use(express.json())
-app.use(cors({origin:['https://insta-frontend-six.vercel.app','http://localhost:5173'],credentials:true}))
+app.use(cors({origin:['https://insta-frontend-six.vercel.app','http://localhost:5173','https://insta-clone-db.netlify.app'],credentials:true}))
 app.use(cookieParser())
 app.get('/',(req,res)=>{
     return res.send("Hello")
