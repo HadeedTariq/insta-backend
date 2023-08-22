@@ -45,8 +45,8 @@ const authenticateUser = async (req, res) => {
     )
 res.cookie('instaUser',token,{
 httpOnly: true,
-    secure: process.env.NODE_ENV !== 'development',
-    sameSite: 'strict', // Prevent CSRF attacks
+    secure: true,
+    sameSite: 'lax', // Prevent CSRF attacks
     maxAge: 30 * 24 * 60 * 60 * 1000
 })
     return res
