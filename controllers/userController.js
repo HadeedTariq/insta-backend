@@ -46,6 +46,7 @@ const authenticateUser = async (req, res) => {
     res.cookie("instaUser", token, {
       httpOnly: true,
       secure: true,
+      sameSite: "strict",
       domain: ".vercel.app",
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
