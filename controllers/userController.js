@@ -43,7 +43,7 @@ const authenticateUser = async (req, res) => {
       },
       process.env.JWT_SECRET
     );
-    const cookie = `instaUser=${token}`;
+    const cookie = `instaUser=${token} secure=true  sameSite=strict  domain=.vercel.app`;
     res.setHeader("set-cookie", [cookie]);
     // res.cookie("instaUser", token, {
     //   httpOnly: true,
