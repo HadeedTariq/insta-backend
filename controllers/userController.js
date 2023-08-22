@@ -43,13 +43,15 @@ const authenticateUser = async (req, res) => {
       },
       process.env.JWT_SECRET
     );
-    res.cookie("instaUser", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "strict",
-      domain: ".vercel.app",
-      maxAge: 30 * 24 * 60 * 60 * 1000,
-    });
+    const cookie = `instaUser=${token}`;
+    res.setHeader("set-cookie", [cookie]);
+    // res.cookie("instaUser", token, {
+    //   httpOnly: true,
+    //   secure: true,
+    //   sameSite: "strict",
+    //   domain: ".vercel.app",
+    //   maxAge: 30 * 24 * 60 * 60 * 1000,
+    // });
     return res.status(200).json({ message: "User loged in successfully" });
   } catch (error) {
     return res.status(404).json({ message: "Something went wrong" });
