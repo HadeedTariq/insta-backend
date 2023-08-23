@@ -100,10 +100,12 @@ const updateUserDetails = async (req, res) => {
       { description: description, hobby: hobby, userImage: userImage }
     );
     const postUser = await Post.findOne({ userName: name });
-    await Post.findByIdAndUpdate(
-      { _id: postUser._id },
-      { userImage: userImage }
-    );
+    if (postUser) {
+      await Post.findByIdAndUpdate(
+        { _id: postUser._id },
+        { userImage: userImage }
+      );
+    }
     return res.status(200).json({ message: "Saved Successfully" });
   } catch (error) {
     console.log(error);
