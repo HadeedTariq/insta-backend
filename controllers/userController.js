@@ -1,9 +1,10 @@
 import { User } from "../models/User.js";
+import { Post } from "../models/Post.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 const createUser = async (req, res) => {
-  const { name, email, password, userImage } = req.body;
+  const { name, email, password } = req.body;
   if (!name || !email || !password) {
     return res.status(404).json({ message: "Please fill all the fields" });
   }
@@ -95,6 +96,11 @@ const updateUserDetails = async (req, res) => {
     await User.findByIdAndUpdate(
       { _id: user._id },
       { description: description, hobby: hobby, userImage: userImage }
+    );
+    const postUser = await Post.findOne({ userName: name });
+    await Post.findByIdAndUpdate(
+      { _id: postUser._id },
+      { userImage: userImage }
     );
     return res.status(200).json({ message: "Saved Successfully" });
   } catch (error) {
