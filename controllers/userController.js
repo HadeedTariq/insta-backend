@@ -58,6 +58,8 @@ const deleteUser = async (req, res) => {
     const user = jwt.verify(instaUser, process.env.JWT_SECRET);
     if (!user) return res.status(404).json({ message: "Invalid Token" });
     await User.deleteOne({ name: user.name });
+    const postUser = await Post.findOne({ userName: user.name });
+    await Post.deleteMany({ _id: postUser._id });
     return res.status(200).json({ message: "User deleted  successfully" });
   } catch (err) {
     console.log(err);
