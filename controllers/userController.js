@@ -43,16 +43,9 @@ const authenticateUser = async (req, res) => {
       },
       process.env.JWT_SECRET
     );
-    const cookie = `instaUser=${token} secure=true  sameSite=strict  domain=.vercel.app`;
-    res.setHeader("set-cookie", [cookie]);
-    // res.cookie("instaUser", token, {
-    //   httpOnly: true,
-    //   secure: true,
-    //   sameSite: "strict",
-    //   domain: ".vercel.app",
-    //   maxAge: 30 * 24 * 60 * 60 * 1000,
-    // });
-    return res.status(200).json({ message: "User loged in successfully" });
+    return res
+      .status(200)
+      .json({ message: "User loged in successfully", token: token });
   } catch (error) {
     return res.status(404).json({ message: "Something went wrong" });
   }
@@ -64,15 +57,7 @@ const deleteUser = async (req, res) => {
     const user = jwt.verify(instaUser, process.env.JWT_SECRET);
     if (!user) return res.status(404).json({ message: "Invalid Token" });
     await User.deleteOne({ name: user.name });
-    return res
-      .cookie("instaUser", "", {
-        httpOnly: true,
-        sameSite: "strict",
-        domain: ".vercel.app",
-        maxAge: 30 * 24 * 60 * 60 * 1000,
-      })
-      .status(200)
-      .json({ message: "User deleted  successfully" });
+    return res.status(200).json({ message: "User deleted  successfully" });
   } catch (err) {
     console.log(err);
     return res.status(404).json({ message: "Something went wrong" });
@@ -94,19 +79,7 @@ const updateUserPassword = async (req, res) => {
       { _id: user._id },
       { password: newHashedPassword }
     );
-    response.set(
-      "A-Control-Allow-Origin",
-      "https://insta-frontend-six.vercel.app"
-    );
-    return res
-      .cookie("instaUser", "", {
-        httpOnly: true,
-        sameSite: "strict",
-        domain: ".vercel.app",
-        maxAge: 30 * 24 * 60 * 60 * 1000,
-      })
-      .status(200)
-      .json({ message: "Password Updated Successfully" });
+    return res.status(200).json({ message: "Password Updated Successfully" });
   } catch (error) {
     console.log(error);
     return res.status(404).json({ message: "Something went wrong" });
@@ -123,16 +96,7 @@ const updateUserDetails = async (req, res) => {
       { _id: user._id },
       { description: description, hobby: hobby, userImage: userImage }
     );
-    return res
-      .cookie("instaUser", "", {
-        httpOnly: true,
-        sameSite: "strict",
-        domain: ".vercel.app",
-        secure: true,
-        maxAge: 30 * 24 * 60 * 60 * 1000,
-      })
-      .status(200)
-      .json({ message: "Saved Successfully" });
+    return res.status(200).json({ message: "Saved Successfully" });
   } catch (error) {
     console.log(error);
     return res.status(404).json({ message: "Something went wrong" });
@@ -140,10 +104,10 @@ const updateUserDetails = async (req, res) => {
 };
 
 const getSingleUser = async (req, res) => {
-  const { instaUser } = req.cookies;
+  const { token } = req.body;
   try {
-    if (!instaUser) return res.status(404).json({ message: "Not token found" });
-    const user = jwt.verify(instaUser, process.env.JWT_SECRET);
+    if (!token) return res.status(404).json({ message: "Not token found" });
+    const user = jwt.verify(token, process.env.JWT_SECRET);
     if (!user) return res.status(404).json({ message: "Invalid Token" });
     return res.status(200).json(user);
   } catch (err) {
@@ -164,16 +128,7 @@ const getAllUser = async (req, res) => {
   return res.status(200).json(users);
 };
 const logOutUser = async (req, res) => {
-  return res
-    .cookie("instaUser", "", {
-      httpOnly: true,
-      sameSite: "strict",
-      domain: ".vercel.app",
-      secure: true,
-      maxAge: 30 * 24 * 60 * 60 * 1000,
-    })
-    .status(200)
-    .json({ message: "User loged out successfully" });
+  return res.status(200).json({ message: "User loged out successfully" });
 };
 
 export {
