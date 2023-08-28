@@ -24,13 +24,17 @@ router.post("/create", async (req, res) => {
 });
 router.post("/addComment", async (req, res) => {
   const { userName, userImage, comment, postId } = req.body;
-  const addComment = await Post.findByIdAndUpdate(
-    { postId },
-    {
-      postComments: { $push: { userName, userImage, comment, postId } },
-    }
-  );
-  return res.status(200).json({ message: "post comment added" });
+  try {
+    const addComment = await Post.findByIdAndUpdate(
+      { postId },
+      {
+        postComments: { $push: { userName, userImage, comment, postId } },
+      }
+    );
+    return res.status(200).json({ message: "post comment added" });
+  } catch (err) {
+    return res.status(404).json({ message: "Something went wrong" });
+  }
 });
 router.get("/", async (req, res) => {
   const allPosts = await Post.find({});
