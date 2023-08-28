@@ -24,7 +24,7 @@ router.post("/create", async (req, res) => {
 });
 router.post("/addComment", async (req, res) => {
   const { userName, userImage, comment, postId } = req.body;
-  const addComment = await Post.updateOne(
+  const addComment = await Post.findByIdAndUpdate(
     { postId },
     {
       postComments: { $push: { userName, userImage, comment, postId } },
